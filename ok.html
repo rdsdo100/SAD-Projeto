@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link rel="stylesheet" type="text/css" href="style5.css" />
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+</head>
+<body>
+
+
+<script>
+
+    let minutos = 0.1;
+    let tempo = minutos * 60000; // coverte milisegindos  em minutos
+
+    let contadorQ1 = [0, 0, 0 , 0];
+    let contadorQ2 = [0, 0, 0 , 0];
+    let contadorQ3 = [0, 0, 0 , 0];
+
+
+
+
+
+
+
+    requisitar();
+
+    setInterval(function () {
+    requisitar()
+    }, tempo); // giro de tempo do carrocel para gerar e requisitaar  o grafico
+
+    async function requisitar () {
+        let url = "http://137.135.71.213:5000/api/answer"; // link servidor daniel
+        let url2 = "questoes.json"; // teste co  json ja salva em maquina
+        let xhr = new XMLHttpRequest()
+        xhr.open("GET", url2);
+        xhr.send(null);
+         xhr.onreadystatechange = function () {
+            if (xhr.status == 200) {
+                if (xhr.readyState == 4) {
+
+                  xhr = JSON.parse(xhr.responseText);
+                   console.log(xhr)
+                   contarArray(xhr);
+                   montarGrafico();
+
+                }
+            }
+        }
+    } // requisição ajax do servidor
+
+    function contarArray(xhr) {
+
+        let questao1 = "Q1";
+        let questao2 = "Q2";
+        let questao3 = "Q3";
+
+         contadorQ1 = [0, 0, 0 , 0];
+         contadorQ2 = [0, 0, 0 , 0];
+         contadorQ3 = [0, 0, 0 , 0];
+
+
+
+
+        for (let i = 0; i < xhr.length; i++) {
+
+
+
+            if (xhr[i].Question == questao1) {
+
+                if (xhr[i].Resposta == "a") {
+                    contadorQ1[0] = contadorQ1[0] + 1;
+                } else if (xhr[i].Resposta == "b") {
+                    contadorQ1[1] = contadorQ1[1] + 1;
+                } else if (xhr[i].Resposta == "c") {
+                    contadorQ1[2] = contadorQ1[2] + 1;
+                }else{
+                    contadorQ1[3] = contadorQ1[3] + 1;
+                }
+
+            } else
+
+                if (xhr[i].Question == questao2) {
+
+                if (xhr[i].Resposta == "a") {
+                    contadorQ2[0] = contadorQ2[0] + 1;
+                } else if (xhr[i].Resposta == "b") {
+                    contadorQ2[1] = contadorQ2[1] + 1;
+                } else if (xhr[i].Resposta == "c") {
+                    contadorQ2[2] = contadorQ2[2] + 1;
+                }else{
+                    contadorQ2[3] = contadorQ2[3] + 1;
+                }
+
+            } else
+
+
+
+                if (xhr[i].Question == questao3) {
+
+                    if (xhr[i].Resposta == "a") {
+                        contadorQ3[0] = contadorQ3[0] + 1;
+                    } else if (xhr[i].Resposta == "b") {
+                        contadorQ3[1] = contadorQ3[1] + 1;
+                    } else if (xhr[i].Resposta == "c") {
+                        contadorQ3[2] = contadorQ3[2] + 1;
+                    }else{
+                        contadorQ3[3] = contadorQ3[3] + 1;
+                    }
+
+                }
+
+            }
+
+
+        console.log(contadorQ1, contadorQ2, contadorQ3 , )
+    } // contador para fazer a medi de respostas
+
+    function montarGrafico() {
+
+
+
+
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChartPie);
+
+        function drawChartPie() {
+
+            var data = google.visualization.arrayToDataTable([
+                ['Task', 'Hours per Day'],
+                ['respoesta A',     contadorQ1[0]],
+                ['respoesta b',    contadorQ1[1] ],
+                ['respoesta c',     contadorQ1[2]],
+                ['respoesta d',     contadorQ1[3]],
+
+
+            ]);
+
+            var options = {
+                title: 'Pergunta 1'
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('piechartPie'));
+
+            chart.draw(data, options);
+        }
+
+
+
+
+
+
+
+
+
+
+
+    }
+
+</script>
+
+<div id="piechartPie" style="width: 1000px;
+    height: 500px;"></div>
+
+</body>
+</html>
