@@ -12,13 +12,17 @@
 
 <script>
 
-    let minutos = 0.1;
+    let minutos = 1.5;
     let tempo = minutos * 60000; // coverte milisegindos  em minutos
+
+    let widthGrafico = 1400;
+    let  heightGrefico = 500;
+
 
     let contadorQ1 = [0, 0, 0 , 0];
     let contadorQ2 = [0, 0, 0 , 0];
     let contadorQ3 = [0, 0, 0 , 0];
-    let arraySanqkey = [];
+  //  let arraySanqkey = [["Q1a" , "Q1a" , 1]];
 
     let cont = 0
 
@@ -76,20 +80,17 @@
 
 
 
-                   if(cont === 0){
-                       cont ++
-                       contarSankey(xhr);
-                       sankey();
 
-                   }else if (cont == 1 ){
+
+                 if (cont == 0 ){
                        cont++
                        contarArray(xhr);
                        barraQ1();
-                }else if (cont == 2 ){
+                }else if (cont == 1 ){
                        cont++
                        contarArray(xhr);
                        pizzaQ2();
-                   }else if (cont == 3 ){
+                   }else if (cont == 2 ){
                        cont = 0
                        contarArray(xhr);
                        barraQ3();
@@ -197,8 +198,8 @@ function barraQ1() {
 
         var options = {
             title: objQ1[0],
-            width: 1400,
-            height: 500,
+            width: widthGrafico,
+            height: heightGrefico,
             bar: {groupWidth: "95%"},
             legend: { position: "none" },
         };
@@ -256,8 +257,8 @@ function barraQ1() {
 
             var options = {
                 title: objQ3[0],
-                width: 1400,
-                height: 500,
+                width: widthGrafico,
+                height: heightGrefico,
                 bar: {groupWidth: "95%"},
                 legend: { position: "none" },
             };
@@ -270,25 +271,18 @@ function barraQ1() {
 
 
 
-    function sankey() {
+    /*function sankey() {
         google.charts.load('current', {'packages':['sankey']});
         google.charts.setOnLoadCallback(drawChart);
-
+ let t =   arraySanqkey
         function drawChart() {
             var data = new google.visualization.DataTable();
             data.addColumn('string', 'From');
             data.addColumn('string', 'To');
             data.addColumn('number', 'Weight');
-            data.addRows([
-                [ 'A', 'X', 5 ],
-                [ 'A', 'Y', 7 ],
-                [ 'A', 'Z', 6 ],
-
-                [ 'B', 'X', 2 ],[ 'B', 'X', 2 ],
-                [ 'B', 'Y', 9 ],
-                [ 'B', 'Z', 4 ],
-                ['Z' , 'T' , 6]
-            ]);
+            data.addRows(
+               arraySanqkey
+            );
 
             // Sets chart options.
             var options = {
@@ -315,35 +309,52 @@ for(let i = 0 ; i < xhr.length ; i = i+3){
     }
     function montarArray(xhr1 , xhr2 , xhr3) {
 
+let teste1 = false;
+let teste2 = false;
 
-        let arreyInterno1 = [(xhr1.Question + xhr1.Resposta) , (xhr2.Question + xhr2.Resposta) , 0  ];
-        let arreyInterno2 = [(xhr2.Question + xhr2.Resposta) , (xhr3.Question + xhr3.Resposta)  , 0 ];
 
         for(let i = 0 ; i < arraySanqkey.length; i++  ){
-        if(arraySanqkey[i][0] == arreyInterno1[0] && arraySanqkey[i][1] == arreyInterno1[1]){
+        if(arraySanqkey[i][0] == (xhr1.Question + xhr1.Resposta) && arraySanqkey[i][1] == (xhr2.Question + xhr2.Resposta)){
             arraySanqkey[i][2] == arraySanqkey[i][2] + 1;
         }else {
-
+teste1 = true;
         }
             for(let i = 0 ; i < arraySanqkey.length; i++  ){
-                if(arraySanqkey[i][0] == arreyInterno2[0] && arraySanqkey[i][1] == arreyInterno2[1]){
+                if(arraySanqkey[i][0] == (xhr2.Question + xhr2.Resposta) && arraySanqkey[i][1] == (xhr2.Question + xhr3.Resposta)){
                     arraySanqkey[i][2] == arraySanqkey[i][2] + 1;
                 }else {
-
+teste2 = true;
                 }
 
+
+
         }
-console.log(arraySanqkey);
+
     }
+        if (teste1 == true){
+            arraySanqkey.push([(xhr1.Question + xhr1.Resposta) , xhr2.Question + xhr2.Resposta , 1 ])
+        }
+        if (teste2 == true){
+            arraySanqkey.push([(xhr2.Question + xhr2.Resposta) , xhr3.Question + xhr3.Resposta , 1 ])
+        }
+
+
+        console.log(arraySanqkey)
+
     }
 
 
 
+*/
 
 </script>
 
-<div id="piechart" style="width: 1400px;
-    height: 800px;"></div>
+<div>
+    <img src="CEPE19n.jpg" style="margin-top: -10px; margin-left: 0% ; margin-right: 0%; width: 100%; height: 120px;">
+</div>
+
+<div id="piechart" style="width: 100%; height: 550px;"></div>
+
 
 </body>
 </html>
